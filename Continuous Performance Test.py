@@ -23,7 +23,8 @@ __author__ = 'Joshua Zosky'
 from psychopy import visual, gui, data, core
 import os  # handy system and path functions
 import random
-
+from collections import Counter
+'''
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(_thisDir)
@@ -50,7 +51,7 @@ else:
 
 print frameDur
 
-
+'''
 alphabet = map(chr, range(65, 91))
 alphaSansK = list(alphabet)
 alphaSansAK = list(alphabet)
@@ -97,33 +98,51 @@ for i in xrange(len(final_trialsK)):
 trialsAK = list(_K_list)
 trialsAK += 2 * alphaSansK
 print trialsAK
-random.shuffle(trialsAK)
 
-final_trialsAK = []
-trialsAK.extend(['K','N','X','K','K','K'])
-for i in xrange((len(trialsAK)+36)/3):
-    finished = False
-    if len(trialsAK) >= 6:
-        while not finished:
-            if (trialsAK[-4:] == ["K"] * 4) or\
-                    (trialsAK[-5:-1] == ["K"] * 4) or\
-                    (trialsAK[-6:-2] == ["K"] * 4):
-                random.shuffle(trialsAK)
-            elif len(final_trialsAK) >= 3:
-                if ((trialsAK[-3] == ["K"]) and (final_trialsAK[-3:] == ["K"] * 3)) or\
-                        ((trialsAK[-3:-1] == ["K"] * 2) and (final_trialsAK[-2:] == ["K"] * 2)) or\
-                        ((trialsAK[-3:] == ["K"] * 3) and (final_trialsAK[-1] == ["K"])):
-                    random.shuffle(trialsAK)
-            else:
-                finished = True
-                final_trialsAK.extend(trialsAK[-3:])
-                del trialsAK[-3:]
+ListComplete = True
+while not ListComplete:
+    random.shuffle(trialsAK)
+    temp_AK = list(trialsAK)
+    final_trialsAK = []
+    #trialsAK.extend(['K','N','X','K','K','K'])
+    for i in xrange((len(temp_AK)+36)/3):
+        finished = False
+        if len(temp_AK) >= 6:
+            while not finished:
+                if (temp_AK[-4:] == ["K"] * 4) or\
+                        (temp_AK[-5:-1] == ["K"] * 4) or\
+                        (temp_AK[-6:-2] == ["K"] * 4):
+                    random.shuffle(temp_AK)
+                elif len(final_trialsAK) >= 3 and len(temp_AK) >= 3:
+                    if ((temp_AK[-3] == ["K"]) and (final_trialsAK[-3:] == ["K"] * 3)) or\
+                            ((temp_AK[-3:-1] == ["K"] * 2) and (final_trialsAK[-2:] == ["K"] * 2)) or\
+                            ((temp_AK[-3:] == ["K"] * 3) and (final_trialsAK[-1] == ["K"])):
+                        random.shuffle(temp_AK)
+                    else:
+                        finished = True
+                        final_trialsAK.extend(temp_AK[-3:])
+                        del temp_AK[-3:]
+                else:
+                    finished = True
+                    final_trialsAK.extend(temp_AK[-3:])
+                    del temp_AK[-3:]
+    if len(final_trialsAK) == 83:
+        ListComplete = True
 
 
-for i in xrange(len(final_trialsAK)):
-    print final_trialsAK[i]
-
-
+amtK = 0
+ttlamtK = 0
+for i in final_trialsAK:
+    if i == 'K':
+        amtK += 1
+        ttlamtK += 1
+    else:
+        print amtK
+        amtK = 0
+    # print i
+print ttlamtK
+print Counter(final_trialsAK)
+core.wait(2)
 quit()
 
 Letter_CPT_K = visual.TextStim(win=win, ori=0, name='Letter_CPT_X',
