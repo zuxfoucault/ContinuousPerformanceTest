@@ -20,7 +20,7 @@ __author__ = 'Joshua Zosky'
     along with "Continuous Performance Test Clinical Software".  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from psychopy import visual, gui, data, core
+from psychopy import visual, gui, data, core, event
 import os  # handy system and path functions
 import stim_generator
 
@@ -60,18 +60,59 @@ Stim_letter = visual.TextStim(win=win, ori=0, name='Letter_CPT_X',
                                color='white', colorSpace='rgb', opacity=1,
                                depth=0.0)
 print visual.getMsPerFrame(myWin=win)
+trial_wait = core.StaticPeriod(screenHz=60)
+trial_clock = core.Clock()
+trial_data = []
+stim_list_1 = stim_list_1[:10]
+stim_list_2 = stim_list_2[:10]
+hits = []
+false_alarms = []
+miss = []
+cor_rej = []
+all_data = [hits, false_alarms, miss, cor_rej]
+
 for stim_list in (stim_list_1, stim_list_2):
+    trial_counter = 0
     for stim in stim_list:
+        trial_counter += 1
         Stim_letter.setText(stim)
         Stim_letter.draw()
         win.flip()
-        print win.fps()
-        core.wait(.1)
+        trial_clock.reset()
+        trial_wait.start(.5)
+        trial_wait.complete()
         win.flip(clearBuffer=True)
+        trial_response = event.getKeys(timeStamped=trial_clock)
+        trial_data.append((stim, trial_response, trial_counter))
+        if trial_response and stim == 'K':
+            hits.append(trial_data[-1])
+        elif trial_response and stim != 'K':
+            false_alarms.append(trial_data[-1])
+        elif not trial_response and stim == 'K':
+            miss.append(trial_data[-1])
+        elif not trial_response and stim != 'K':
+            cor_rej.append(trial_data[-1])
+        else:
+            print "What happened with %s" % trial_data[-1]
         core.wait(.1)
-        print win.fps()
+    print trial_data
     Stim_letter.setText("Next list")
     Stim_letter.draw()
     win.flip()
     core.wait(2)
     win.flip(clearBuffer=True)
+
+for i in all_data:
+    print i
+
+'''
+for trial_info in trial_data:
+    trial_letter, trial_response, trial_number = trial_info
+    if trial_response and trial_letter == 'K':
+        hits.append((trial_number, trial_response))
+    elif trial_response and trial_letter != 'K':
+        false_alarms.append((trial_number, trial_response))
+
+print hits
+print false_alarms
+'''
