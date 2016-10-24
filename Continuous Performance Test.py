@@ -19,11 +19,10 @@ __author__ = 'Joshua Zosky'
     You should have received a copy of the GNU General Public License
     along with "Continuous Performance Test Clinical Software".  If not, see <http://www.gnu.org/licenses/>.
 """
-import random
 
-'''
 from psychopy import visual, gui, data, core
 import os  # handy system and path functions
+import stim_generator
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -50,156 +49,29 @@ else:
     frameDur = 1.0/60.0 # couldn't get a reliable measure so guess
 
 print frameDur
-'''
-def find_sublist(sublist, main_list):
-    r = []
-    L = len(sublist)
-    for i in range(len(main_list)):
-        if main_list[i:i+L] == sublist:
-            r.append(i)
-    return r
 
-alphabet = map(chr, range(65, 91))
-alphaSansK = list(alphabet)
-alphaSansAK = list(alphabet)
+stim_list_1, stim_list_2 = stim_generator.create_stim(verbose=False)
 
-alphaSansK.remove('K')  ####Delete K from the list
-alphaSansAK.remove('K')
-alphaSansAK.remove('A')
+print stim_list_1, stim_list_2
 
-# Create static lists for K and A
-_K_list = ["K" for i in xrange(36)]
-_A_list = ["A" for i in xrange(36)]
-
-# Create list of letters for 'K' trials
-trialsK = list(_K_list)
-trialsK += 3 * alphaSansK
-random.shuffle(alphaSansK)
-# print alphaSansK
-for i in xrange(9):
-    trialsK.append(alphaSansK[i])
-test = [1] #### Set test to have an element to start
-
-while test:
-    final_trialsK = list(trialsK)
-    random.shuffle(final_trialsK)
-    test = find_sublist(['K', 'K', 'K', 'K'], final_trialsK)
-    print test
-
-print final_trialsK
-
-for i in xrange(len(final_trialsK)):
-    print "%03d:%s" % (i, final_trialsK[i])
-
-# Create list of letters for 'AK' trials
-trialsAK = list(_K_list)
-trialsAK += 2 * alphaSansK
-print trialsAK
-test = [1]
-
-while test:
-    final_trialsAK = list(trialsAK)
-    random.shuffle(final_trialsAK)
-    test = find_sublist(['K', 'K', 'K', 'K'], final_trialsAK)
-    print test
-
-for i in xrange(len(final_trialsAK)):
-    print "%03d:%s" % (i, final_trialsAK[i])
-'''
-
-alphabet = map(chr, range(65, 91))
-alphaSansK = list(alphabet)
-alphaSansAK = list(alphabet)
-
-alphaSansK.remove('K')  ####Delete K from the list
-alphaSansAK.remove('K')
-alphaSansAK.remove('A')
-
-# Create static lists for K and A
-_K_list = ["K" for i in xrange(36)]
-_A_list = ["A" for i in xrange(36)]
-
-# Create list of letters for 'K' trials
-trialsK = list(_K_list)
-trialsK += 3 * alphaSansK
-random.shuffle(alphaSansK)
-# print alphaSansK
-for i in xrange(9):
-    trialsK.append(alphaSansK[i])
-# print trialsK[-10:-1]
-# print trialsK
-random.shuffle(trialsK)
-
-final_trialsK = []
-for asdf in xrange(100):
-    for i in xrange(len(trialsK)/3):
-        finished = False
-        if len(trialsK) >= 6:
-            while not finished:
-                if (trialsK[-4:] == ["K"] * 4) or\
-                        (trialsK[-5:-1] == ["K"] * 4) or\
-                        (trialsK[-6:-2] == ["K"] * 4):
-                    random.shuffle(trialsK)
-                else:
-                    finished = True
-                    final_trialsK.extend(trialsK[-3:])
-                    del trialsK[-3:]
-    test = find_sublist(['K', 'K', 'K'], final_trialsK)
-
-test = find_sublist(['K', 'K', 'K', 'K'], final_trialsK)
-
-print test
-
-for i in xrange(len(final_trialsK)):
-    print final_trialsK[i]
-'''
-'''
-# Create list of letters for 'AK' trials
-trialsAK = list(_K_list)
-trialsAK += 2 * alphaSansK
-print trialsAK
-random.shuffle(trialsAK)
-
-final_trialsAK = []
-trialsAK.extend(['K','N','X','K','K','K'])
-
-for i in xrange((len(trialsAK)+36)/3):
-    finished = False
-    if len(trialsAK) >= 6:
-        while not finished:
-            if (trialsAK[-4:] == ["K"] * 4) or\
-                    (trialsAK[-5:-1] == ["K"] * 4) or\
-                    (trialsAK[-6:-2] == ["K"] * 4):
-                random.shuffle(trialsAK)
-            elif len(final_trialsAK) >= 3:
-                if ((trialsAK[-3] == ["K"]) and (final_trialsAK[-3:] == ["K"] * 3)) or\
-                        ((trialsAK[-3:-1] == ["K"] * 2) and (final_trialsAK[-2:] == ["K"] * 2)) or\
-                        ((trialsAK[-3:] == ["K"] * 3) and (final_trialsAK[-1] == ["K"])):
-                    random.shuffle(trialsAK)
-            else:
-                finished = True
-                final_trialsAK.extend(trialsAK[-3:])
-                del trialsAK[-3:]
-
-
-for i in xrange(len(final_trialsAK)):
-    print final_trialsAK[i]
-'''
-
-quit()
-
-Letter_CPT_K = visual.TextStim(win=win, ori=0, name='Letter_CPT_X',
+Stim_letter = visual.TextStim(win=win, ori=0, name='Letter_CPT_X',
                                text='default text', font='Arial',
                                pos=[0, 0], height=0.5, wrapWidth=None,
                                color='white', colorSpace='rgb', opacity=1,
                                depth=0.0)
 print visual.getMsPerFrame(myWin=win)
-for i in xrange(len(trialsK)):
-    Letter_CPT_K.setText(trialsK[i])
-    Letter_CPT_K.draw()
+for stim_list in (stim_list_1, stim_list_2):
+    for stim in stim_list:
+        Stim_letter.setText(stim)
+        Stim_letter.draw()
+        win.flip()
+        print win.fps()
+        core.wait(.1)
+        win.flip(clearBuffer=True)
+        core.wait(.1)
+        print win.fps()
+    Stim_letter.setText("Next list")
+    Stim_letter.draw()
     win.flip()
-    print win.fps()
-    core.wait(.5)
+    core.wait(2)
     win.flip(clearBuffer=True)
-    core.wait(.5)
-    print win.fps()
