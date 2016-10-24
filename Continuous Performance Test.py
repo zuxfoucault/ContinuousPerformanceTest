@@ -19,10 +19,11 @@ __author__ = 'Joshua Zosky'
     You should have received a copy of the GNU General Public License
     along with "Continuous Performance Test Clinical Software".  If not, see <http://www.gnu.org/licenses/>.
 """
+import random
 
+'''
 from psychopy import visual, gui, data, core
 import os  # handy system and path functions
-import random
 
 # Ensure that relative paths start from the same directory as this script
 _thisDir = os.path.dirname(os.path.abspath(__file__))
@@ -49,7 +50,62 @@ else:
     frameDur = 1.0/60.0 # couldn't get a reliable measure so guess
 
 print frameDur
+'''
+def find_sublist(sublist, main_list):
+    r = []
+    L = len(sublist)
+    for i in range(len(main_list)):
+        if main_list[i:i+L] == sublist:
+            r.append(i)
+    return r
 
+alphabet = map(chr, range(65, 91))
+alphaSansK = list(alphabet)
+alphaSansAK = list(alphabet)
+
+alphaSansK.remove('K')  ####Delete K from the list
+alphaSansAK.remove('K')
+alphaSansAK.remove('A')
+
+# Create static lists for K and A
+_K_list = ["K" for i in xrange(36)]
+_A_list = ["A" for i in xrange(36)]
+
+# Create list of letters for 'K' trials
+trialsK = list(_K_list)
+trialsK += 3 * alphaSansK
+random.shuffle(alphaSansK)
+# print alphaSansK
+for i in xrange(9):
+    trialsK.append(alphaSansK[i])
+test = [1] #### Set test to have an element to start
+
+while test:
+    final_trialsK = list(trialsK)
+    random.shuffle(final_trialsK)
+    test = find_sublist(['K', 'K', 'K', 'K'], final_trialsK)
+    print test
+
+print final_trialsK
+
+for i in xrange(len(final_trialsK)):
+    print "%03d:%s" % (i, final_trialsK[i])
+
+# Create list of letters for 'AK' trials
+trialsAK = list(_K_list)
+trialsAK += 2 * alphaSansK
+print trialsAK
+test = [1]
+
+while test:
+    final_trialsAK = list(trialsAK)
+    random.shuffle(final_trialsAK)
+    test = find_sublist(['K', 'K', 'K', 'K'], final_trialsAK)
+    print test
+
+for i in xrange(len(final_trialsAK)):
+    print "%03d:%s" % (i, final_trialsAK[i])
+'''
 
 alphabet = map(chr, range(65, 91))
 alphaSansK = list(alphabet)
@@ -75,24 +131,29 @@ for i in xrange(9):
 random.shuffle(trialsK)
 
 final_trialsK = []
+for asdf in xrange(100):
+    for i in xrange(len(trialsK)/3):
+        finished = False
+        if len(trialsK) >= 6:
+            while not finished:
+                if (trialsK[-4:] == ["K"] * 4) or\
+                        (trialsK[-5:-1] == ["K"] * 4) or\
+                        (trialsK[-6:-2] == ["K"] * 4):
+                    random.shuffle(trialsK)
+                else:
+                    finished = True
+                    final_trialsK.extend(trialsK[-3:])
+                    del trialsK[-3:]
+    test = find_sublist(['K', 'K', 'K'], final_trialsK)
 
-for i in xrange(len(trialsK)/3):
-    finished = False
-    if len(trialsK) >= 6:
-        while not finished:
-            if (trialsK[-4:] == ["K"] * 4) or\
-                    (trialsK[-5:-1] == ["K"] * 4) or\
-                    (trialsK[-6:-2] == ["K"] * 4):
-                random.shuffle(trialsK)
-            else:
-                finished = True
-                final_trialsK.extend(trialsK[-3:])
-                del trialsK[-3:]
+test = find_sublist(['K', 'K', 'K', 'K'], final_trialsK)
 
+print test
 
 for i in xrange(len(final_trialsK)):
     print final_trialsK[i]
-
+'''
+'''
 # Create list of letters for 'AK' trials
 trialsAK = list(_K_list)
 trialsAK += 2 * alphaSansK
@@ -101,6 +162,7 @@ random.shuffle(trialsAK)
 
 final_trialsAK = []
 trialsAK.extend(['K','N','X','K','K','K'])
+
 for i in xrange((len(trialsAK)+36)/3):
     finished = False
     if len(trialsAK) >= 6:
@@ -122,7 +184,7 @@ for i in xrange((len(trialsAK)+36)/3):
 
 for i in xrange(len(final_trialsAK)):
     print final_trialsAK[i]
-
+'''
 
 quit()
 
