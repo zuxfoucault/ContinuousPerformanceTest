@@ -267,7 +267,7 @@ for key in design_dictionary:
                 else:
                     win.clearBuffer()
                     if not stim_off:
-                        win.logOnFlip('draw: {0} flip-off'.format(stim), log.EXP)
+                        win.logOnFlip('draw:\t{0} flip-off'.format(stim), log.EXP)
                     stim_off = True
                 trial_response = event.getKeys()
                 if trial_response:
