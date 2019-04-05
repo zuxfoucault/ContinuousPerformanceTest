@@ -59,7 +59,7 @@ if expInfo['frameRate']:
 else:
     frameDur = 1.0 / 60.0  # couldn't get a reliable measure so guess
 
-print frameDur
+print(frameDur)
 
 
 
@@ -343,7 +343,7 @@ for key in design_dictionary:
                     trial_data.extend([correct_response, correct, trial_type])
                     cor_rej.append(tuple(trial_data))
             else:
-                print "What happened with %s" % trial_data[-1]
+                print("What happened with %s" % trial_data[-1])
             #
             #
             CPT_data.write_data(file_path, [expInfo['Participant'],

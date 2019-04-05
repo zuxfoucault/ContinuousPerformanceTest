@@ -35,7 +35,7 @@ def find_sublist(sublist, main_list):
 
 def create_stim(test_type='K', verbose=True):
     if test_type not in ['K', 'AK']:
-        print 'wrong value for test_type (must be "K" or "AK")'
+        print('wrong value for test_type (must be "K" or "AK")')
         return
     alphabet = map(chr, range(65, 91))
     alphaSansK = list(alphabet)
@@ -57,41 +57,41 @@ def create_stim(test_type='K', verbose=True):
         for i in xrange(9):
             trials.append(alphaSansK[i])
         test = [1]  #### Set test to have an element to start
-    
+
         while test:
             final_trials = list(trials)
             random.shuffle(final_trials)
             test = find_sublist(['K', 'K', 'K', 'K'], final_trials)
             if verbose:
-                print test
+                print(test)
         if verbose:
-            print final_trials
+            print(final_trials)
             for i in xrange(len(final_trials)):
-                print "%03d:%s" % (i, final_trials[i])
+                print("%03d:%s" % (i, final_trials[i]))
     elif test_type == "AK":
         # Create list of letters for 'AK' trials
         trials = list(target_list)
         trials += 2 * alphaSansAK
         if verbose:
-            print trials
+            print(trials)
         test = [1]
-    
+
         while test:
             pre_final_trials = list(trials)
             random.shuffle(pre_final_trials)
             test = find_sublist(['K', 'K', 'K', 'K'], pre_final_trials)
             if verbose:
-                print test
-    
+                print(test)
+
         final_trials = []
         for letter in pre_final_trials:
             if letter is 'K':
                 final_trials.append('A')
             final_trials.append(letter)
-    
+
         if verbose:
             for i in xrange(len(final_trials)):
-                print "%03d:%s" % (i, final_trials[i])
+                print("%03d:%s" % (i, final_trials[i]))
 
     return final_trials
 
