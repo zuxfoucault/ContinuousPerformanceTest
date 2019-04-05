@@ -39,6 +39,7 @@ def create_stim(test_type='K', verbose=True):
         return
     alphabet = map(chr, range(65, 91))
     alphaSansK = list(alphabet)
+    alphabet = map(chr, range(65, 91))
     alphaSansAK = list(alphabet)
 
     alphaSansK.remove('K')  ####Delete K from the list
@@ -46,7 +47,7 @@ def create_stim(test_type='K', verbose=True):
     alphaSansAK.remove('A')
 
     # Create static lists for K
-    target_list = ["K" for i in xrange(36)]
+    target_list = ["K" for i in range(36)]
 
     if test_type == "K":
         # Create list of letters for 'K' trials
@@ -54,7 +55,7 @@ def create_stim(test_type='K', verbose=True):
         trials += 3 * alphaSansK
         random.shuffle(alphaSansK)
         # print alphaSansK
-        for i in xrange(9):
+        for i in range(9):
             trials.append(alphaSansK[i])
         test = [1]  #### Set test to have an element to start
 
@@ -66,7 +67,7 @@ def create_stim(test_type='K', verbose=True):
                 print(test)
         if verbose:
             print(final_trials)
-            for i in xrange(len(final_trials)):
+            for i in range(len(final_trials)):
                 print("%03d:%s" % (i, final_trials[i]))
     elif test_type == "AK":
         # Create list of letters for 'AK' trials
@@ -90,7 +91,7 @@ def create_stim(test_type='K', verbose=True):
             final_trials.append(letter)
 
         if verbose:
-            for i in xrange(len(final_trials)):
+            for i in range(len(final_trials)):
                 print("%03d:%s" % (i, final_trials[i]))
 
     return final_trials

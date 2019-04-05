@@ -12,7 +12,7 @@ def test_info_gui(test_type='K'):
     test_info = {'# of Runs': u''}
     dlg = gui.DlgFromDict(dictionary=test_info, title='TEST {0}'.format(test_type))
     if not dlg.OK:
-        log('User pressed cancel', info)
+        log('User pressed cancel', 1, info)
         quit()  # user pressed cancel
     try:
         n_test = int(test_info['# of Runs'])
@@ -22,7 +22,7 @@ def test_info_gui(test_type='K'):
     if n_test < 0:
         log('User entered negative number for {0} test'.format(test_type), info)
         quit()
-    log('User requests {0} round(s) of the {1} test'.format(n_test, test_type), info)
+    log('User requests {0} round(s) of the {1} test'.format(n_test, test_type), 1, info)
     return n_test
 
 
@@ -48,7 +48,7 @@ def generate_stimuli(test_type, n_rounds):
     if n_rounds == 0:
         return return_list
     # create all trials for each paradigm
-    for n_rounds in xrange(n_rounds):
+    for n_rounds in range(n_rounds):
         return_list.append(stim_generator.create_stim(test_type))
     return return_list
 

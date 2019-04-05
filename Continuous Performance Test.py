@@ -42,6 +42,8 @@ design_dictionary, expInfo = experiment_info.get_info()
 expInfo['troubleshooting'] = ''  # 1
 
 log_file = CPT_data.create_log_file(expInfo)
+print(log_file)
+
 
 # Setup the Window
 win = visual.Window(size=(640, 480), fullscr=True, screen=0, allowGUI=False, allowStencil=False,
@@ -186,7 +188,7 @@ CPT_data.append_data(comb_task_file_name, [expInfo[u'Participant'],
 chosen_list = []
 
 for i in (K_stim_lists, AK_stim_lists):
-    for j in xrange(int(expInfo[u'# of runs per experiment'])):
+    for j in range(int(expInfo[u'# of runs per experiment'])):
         chosen_list.append(i[j])
 '''
 for key in design_dictionary:
@@ -210,7 +212,7 @@ for key in design_dictionary:
                 win.logOnFlip('K instructions loaded on-screen', log.EXP)
                 win.flip()
                 event.waitKeys()
-                for i in xrange(5, 0, -1):
+                for i in range(5, 0, -1):
                     i = "%s" % i
                     Stim_letter.setText(i)
                     Stim_letter.draw()
@@ -231,7 +233,7 @@ for key in design_dictionary:
                 win.logOnFlip('AK instructions loaded on-screen', log.EXP)
                 win.flip()
                 event.waitKeys()
-                for i in xrange(5, 0, -1):
+                for i in range(5, 0, -1):
                     i = "%s" % i
                     Stim_letter.setText(i)
                     Stim_letter.draw()
@@ -408,7 +410,7 @@ for key in design_dictionary:
         if overall_data_list == []:
             overall_data_list.extend(averages_list)
         else:
-            for i in xrange(1, len(averages_list)):
+            for i in range(1, len(averages_list)):
                 overall_data_list[i] += averages_list[i]
                 if i in (2, 3, 5, 6, 8, 9, 11, 12, 14, 15):
                     if averages_list[i] != 0:
